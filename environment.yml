@@ -1,0 +1,10 @@
+name: missing-mass-env
+
+dependencies:
+  - python
+  - jupyter
+  - pytorch
+  - pip:
+    - pandas
+    - tqdm
+    - matplotlib
