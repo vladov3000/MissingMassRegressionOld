@@ -1,1 +1,3 @@
-data/wlnu.dat
+*.dat
+*.swp
+.ipynb_checkpoints
