@@ -2,3 +2,9 @@
 *.swp
 .ipynb_checkpoints
 __pycache__
+.vscode
+lightning_logs
+MissingMassRegression-wlnu
+wandb
+wlnu-regression
+*.ckpt

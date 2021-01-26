@@ -8,3 +8,5 @@ dependencies:
     - pandas
     - tqdm
     - matplotlib
+    - pytorch-lightning
+    - wandb
