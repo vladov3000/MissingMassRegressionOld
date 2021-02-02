@@ -9,7 +9,7 @@ class WLNuDataset(torch.utils.data.Dataset):
     def __init__(self, df_path="data/gen.csv"):
 
         df = pd.read_csv(df_path)
-        df = df.drop(labels=["W_px", "W_py", "W_pz", "W_m", "L_E", "Nu_E"],
+        df = df.drop(labels=["W_px", "W_py", "W_pz", "W_m", "L_m", "Nu_m"],
                      axis=1)
 
         self.data = torch.from_numpy(df.values).float()
