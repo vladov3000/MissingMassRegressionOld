@@ -9,3 +9,4 @@ wandb
 wlnu-regression
 *.ckpt
 *.pkl
+*.out
