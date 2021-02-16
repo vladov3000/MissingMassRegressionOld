@@ -187,13 +187,10 @@ def mass_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
 def higgs_mass_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
     """ 
     Computes loss for Higgs and neutrinos' masses.
-
     input consists of
         La_Visx/y/z, Lb_Visx/y/z, MET_X_Vis, MET_Y_Vis
-
     out consists of 
         Na_Genx/y/z, Nb_Genz
-
     target consists of 
         Na_Genx/y/z, Nb_Genx/y/z, La_VisE, Lb_VisE, H_Genm_squared
     """
@@ -234,6 +231,85 @@ def higgs_mass_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
                    Na_Genp), loss_fn(Nb_p,
                                      Nb_Genp), loss_fn(H_m_squared,
                                                        H_Genm_squared)
+
+
+def all_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
+    """ 
+    Computes loss for Higgs and neutrinos' masses.
+
+    input consists of
+        La_Visx/y/z, Lb_Visx/y/z, MET_X_Vis, MET_Y_Vis
+
+    out consists of 
+        Na_Genx/y/z, Nb_Genz
+
+    target consists of 
+        Na_Genx/y/z, Nb_Genx/y/z, Wa_Genx/y/z,  Wb_Genx/y/z, H_Genx/y/z,
+        La_VisE, Lb_VisE, Na_GenE, Nb_GenE, Wa_GenE, Wb_GenE, H_GenE,
+        Wa_Genm_squared, Wb_Genm_squared, H_Genm_squared
+    """
+    # unpack variables
+    La_Visp = inputs[:, 0:3]
+    Lb_Visp = inputs[:, 3:6]
+    MET_X_Vis = inputs[:, 6]
+    MET_Y_Vis = inputs[:, 7]
+
+    Na_Genp = target[:, 0:3]
+    Nb_Genp = target[:, 3:6]
+    Wa_Genp = target[:, 6:9]
+    Wb_Genp = target[:, 9:12]
+    H_Genp = target[:, 12:15]
+    La_VisE = target[:, 15]
+    Lb_VisE = target[:, 16]
+    Na_GenE = target[:, 17]
+    Nb_GenE = target[:, 18]
+    Wa_GenE = target[:, 19]
+    Wb_GenE = target[:, 20]
+    H_GenE = target[:, 21]
+    Wa_Genm2 = target[:, 22]
+    Wb_Genm2 = target[:, 23]
+    H_Genm2 = target[:, 24]
+
+    # Compute momentum
+    Na_p = out[:, 0:3]
+
+    Nb_p = torch.zeros_like(Na_p)
+    Nb_p[:, 2] = out[:, 3]
+    Nb_p[:, 1] = MET_Y_Vis - Na_p[:, 1]
+    Nb_p[:, 0] = MET_X_Vis - Na_p[:, 0]
+
+    Wa_p = La_Visp + Na_p
+    Wb_p = Lb_Visp + Nb_p
+    H_p = Wa_p + Wb_p
+
+    # Compute energy
+    Na_E = norm(Na_p)
+    Nb_E = norm(Nb_p)
+
+    Wa_E = La_VisE + Na_E
+    Wb_E = Lb_VisE + Nb_E
+    H_E = Wa_E + Wb_E
+
+    # Compute squared mass
+    Wa_m2 = Wa_E**2 - square_norm(Wa_p)
+    Wb_m2 = Wa_E**2 - square_norm(Wb_p)
+    H_m2 = H_E**2 - square_norm(H_p)
+
+    return [
+        loss_fn(Na_p, Na_Genp),
+        loss_fn(Nb_p, Nb_Genp),
+        loss_fn(Wa_p, Wa_Genp),
+        loss_fn(Wb_p, Wb_Genp),
+        loss_fn(H_p, H_Genp),
+        loss_fn(Na_E, Na_GenE),
+        loss_fn(Nb_E, Nb_GenE),
+        loss_fn(Wa_E, Wa_GenE),
+        loss_fn(Wb_E, Wb_GenE),
+        loss_fn(H_E, H_GenE),
+        loss_fn(Wa_m2, Wa_Genm2),
+        loss_fn(Wb_m2, Wb_Genm2),
+        loss_fn(H_m2, H_Genm2),
+    ]
 
 
 def norm(x):

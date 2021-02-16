@@ -36,6 +36,8 @@ class HWWModel(pl.LightningModule):
             self.loss_fn = criterion.mass_loss_fn
         elif loss_type == "higgs_mass":
             self.loss_fn = criterion.higgs_mass_loss_fn
+        elif loss_type == "all":
+            self.loss_fn = criterion.all_loss_fn
         else:
             raise Exception(
                 "loss_type is {loss_type}, which is not an acceptable loss_type"

@@ -62,6 +62,34 @@ class HWWDataset(torch.utils.data.Dataset):
         elif loss_type == "higgs_mass":
             extra = ["La_VisE", "Lb_VisE", "Hm_squared"]
             self.targets = Na + Nb + extra
+        elif loss_type == "all":
+            self.targets = [
+                "Na_Genx",
+                "Na_Geny",
+                "Nb_Genz",
+                "Nb_Genx",
+                "Nb_Geny",
+                "Nb_Genz",
+                "Wa_Genx",
+                "Wa_Geny",
+                "Wa_Genz",
+                "Wb_Genx",
+                "Wb_Geny",
+                "Wb_Genz",
+                "H_Genx",
+                "H_Geny",
+                "H_Genz",
+                "La_VisE",
+                "Lb_VisE",
+                "Na_GenE",
+                "Nb_GenE",
+                "Wa_GenE",
+                "Wb_GenE",
+                "H_GenE",
+                "Wa_Genm_squared",
+                "Wb_Genm_squared",
+                "H_Genm_squared",
+            ]
         else:
             raise Exception(
                 "loss_type is {loss_type}, which is not an acceptable loss_type"
