@@ -15,7 +15,7 @@ def nu_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
     target consists of 
         Na_Genx/y/z, Nb_Genz
     """
-    return loss_fn(out, target)
+    return [loss_fn(out, target)]
 
 
 def momentum_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
@@ -66,7 +66,7 @@ def momentum_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
     loss += loss_fn(Wb_p, Wb_Genp)
     loss += loss_fn(H_p, H_Genp)
 
-    return loss
+    return [loss]
 
 
 def energy_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
@@ -122,7 +122,7 @@ def energy_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
     loss += loss_fn(Wb_E, Wb_GenE)
     loss += loss_fn(H_E, H_GenE)
 
-    return loss
+    return [loss]
 
 
 def mass_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
@@ -181,7 +181,7 @@ def mass_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
     loss += loss_fn(Wb_m, Wb_Genm)
     loss += loss_fn(H_m, H_Genm)
 
-    return loss
+    return [loss]
 
 
 def higgs_mass_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
