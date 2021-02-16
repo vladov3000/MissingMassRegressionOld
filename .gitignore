@@ -8,3 +8,4 @@ MissingMassRegression-wlnu
 wandb
 wlnu-regression
 *.ckpt
+*.pkl
