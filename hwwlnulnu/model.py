@@ -99,10 +99,9 @@ class HWWModel(pl.LightningModule):
         loss = torch.stack(outputs).mean()
         self.log(f"{name}_loss", loss)
 
-        self.metrics["hello"] = 25
         for k, v in self.metrics.items():
             if k != "len":
-                self.log(k, v / self.metrics["len"])
+                self.log(k, v)
 
         self.metrics = {
             "len": 0,
