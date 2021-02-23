@@ -57,6 +57,11 @@ class HWWModel(pl.LightningModule):
 
         self.model = nn.Sequential(first_layer, *hidden_layers, out_layer)
 
+        # keep track of metrics per batch
+        self.metrics = {
+            "len": 0,  # number of batches processed
+        }
+
     def forward(self, x):
         return self.model(x)
 
@@ -66,7 +71,19 @@ class HWWModel(pl.LightningModule):
     def _eval(self, batch):
         x, y = batch
         y_hat = self(x)
-        loss = sum(self.loss_fn(y_hat, y, x))
+
+        losses = self.loss_fn(y_hat, y, x)
+        loss = sum(losses.values())
+
+        for k, v in losses.items():
+            if not k in self.metrics:
+                # self.metrics["len"] must be 0
+                self.metrics[k] = v
+            else:
+                self.metrics[k] += v
+
+        self.metrics["len"] += 1
+
         return loss
 
     def training_step(self, batch, batch_idx):
@@ -78,17 +95,27 @@ class HWWModel(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         return self._eval(batch)
 
+    def _log_epoch_end(self, outputs, name):
+        loss = torch.stack(outputs).mean()
+        self.log(f"{name}_loss", loss)
+
+        self.metrics["hello"] = 25
+        for k, v in self.metrics.items():
+            if k != "len":
+                self.log(k, v / self.metrics["len"])
+
+        self.metrics = {
+            "len": 0,
+        }
+
     def training_epoch_end(self, outputs):
-        loss = torch.stack([x["loss"] for x in outputs]).mean()
-        self.log("train_loss", loss)
+        self._log_epoch_end([x["loss"] for x in outputs], "train")
 
     def validation_epoch_end(self, outputs):
-        loss = torch.stack(outputs).mean()
-        self.log("val_loss", loss)
+        self._log_epoch_end(outputs, "val")
 
     def test_epoch_end(self, outputs):
-        loss = torch.stack(outputs).mean()
-        self.log("test_loss", loss)
+        self._log_epoch_end(outputs, "test")
 
     @staticmethod
     def add_model_specific_args(parent_parser):

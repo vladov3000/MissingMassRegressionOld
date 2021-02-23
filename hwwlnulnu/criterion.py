@@ -295,21 +295,21 @@ def all_loss_fn(out, target, inputs, loss_fn=F.mse_loss):
     Wb_m2 = Wa_E**2 - square_norm(Wb_p)
     H_m2 = H_E**2 - square_norm(H_p)
 
-    return [
-        loss_fn(Na_p, Na_Genp),
-        loss_fn(Nb_p, Nb_Genp),
-        loss_fn(Wa_p, Wa_Genp),
-        loss_fn(Wb_p, Wb_Genp),
-        loss_fn(H_p, H_Genp),
-        loss_fn(Na_E, Na_GenE),
-        loss_fn(Nb_E, Nb_GenE),
-        loss_fn(Wa_E, Wa_GenE),
-        loss_fn(Wb_E, Wb_GenE),
-        loss_fn(H_E, H_GenE),
-        loss_fn(Wa_m2, Wa_Genm2),
-        loss_fn(Wb_m2, Wb_Genm2),
-        loss_fn(H_m2, H_Genm2),
-    ]
+    return {
+        "Na_p": loss_fn(Na_p, Na_Genp),
+        "Nb_p": loss_fn(Nb_p, Nb_Genp),
+        "Wa_p": loss_fn(Wa_p, Wa_Genp),
+        "Wb_p": loss_fn(Wb_p, Wb_Genp),
+        "H_p": loss_fn(H_p, H_Genp),
+        "Na_E": loss_fn(Na_E, Na_GenE),
+        "Nb_E": loss_fn(Nb_E, Nb_GenE),
+        "Wa_E": loss_fn(Wa_E, Wa_GenE),
+        "Wb_E": loss_fn(Wb_E, Wb_GenE),
+        "H_E": loss_fn(H_E, H_GenE),
+        "Wa_m2": loss_fn(Wa_m2, Wa_Genm2),
+        "Wb_m2": loss_fn(Wb_m2, Wb_Genm2),
+        "H_m2": loss_fn(H_m2, H_Genm2),
+    }
 
 
 def norm(x):
