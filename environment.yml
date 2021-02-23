@@ -5,6 +5,7 @@ dependencies:
   - jupyter
   - pytorch
   - pip:
+    - scikit-learn
     - pandas
     - tqdm
     - matplotlib

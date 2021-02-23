@@ -5,3 +5,5 @@
 #SBATCH -c 10
 #SBATCH -t 60
 
+conda activate missing-mass-env
+wandb agent vladov3000/MissingMassRegression-hwwlnulnu/dsa468hu
