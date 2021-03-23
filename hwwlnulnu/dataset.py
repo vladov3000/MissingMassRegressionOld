@@ -188,5 +188,5 @@ class HWWDataModule(pl.LightningDataModule):
         parser = ArgumentParser(parents=[parent_parser], add_help=False)
         parser.add_argument("--data_path", type=str, default="data")
         parser.add_argument("--num_workers", type=int, default=8)
-        parser.add_argument("--batch_size", type=int, default=1024)
+        parser.add_argument("--batch_size", type=int, default=1048576)
         return parser

@@ -29,7 +29,7 @@ def main(args):
     print(model)
 
     early_stopping = EarlyStopping(monitor='val_loss', patience=5)
-    wandb_logger = WandbLogger(project="wlnu-regression")
+    wandb_logger = WandbLogger(project="hwwlnulnu-regression")
 
     trainer = Trainer.from_argparse_args(args,
                                          callbacks=[early_stopping],
